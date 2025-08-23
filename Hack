@@ -1,0 +1,10 @@
+local ScreenGui = Instance.new("ScreenGui")
+local TextLabel = Instance.new("TextLabel")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+TextLabel.Parent = ScreenGui
+
+TextLabel.Text = "Hello World"
+TextLabel.Size = UDim2.new(0, 200, 0, 50)
+TextLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
+TextLabel.TextScaled = true
