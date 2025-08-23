@@ -1,1 +1,31 @@
-aW1wb3J0IHB5Z2FtZQppbXBvcnQgdGltZQppbXBvcnQgc3lzCmltcG9ydCByYW5kb20KCnB5Z2FtZS5pbml0KCkKc2NyZWVuID0gcHlnYW1lLmRpc3BsYXkuc2V0X21vZGUoKDAsIDApLCBweWdhbWUuRlVMTFNDUkVFTikKd2lkdGgsIGhlaWdodCA9IHNjcmVlbi5nZXRfc2l6ZSgpCmp1bXBfaW1hZ2UgPSBweWdhbWUuaW1hZ2UubG9hZCgiaG9ycm9yX2ltYWdlLmpwZyIpCmp1bXBfaW1hZ2UgPSBweWdhbWUudHJhbnNmb3JtLnNjYWxlKGp1bXBfaW1hZ2UsICh3aWR0aCwgaGVpZ2h0KSkKanVtcF9zb3VuZCA9IHB5Z2FtZS5taXhlci5Tb3VuZCgic2NyZWFtLndhdiIpCgpkZWYgZmxhc2hfc2NyZWVuKGR1cmF0aW9uPTIsIHNwZWVkPTAuMDUpOgogICAgZW5kX3RpbWUgPSB0aW1lLnRpbWUoKSArIGR1cmF0aW9uCiAgICBjb2xvcnMgPSBbKDI1NSwgMjU1LCAyNTUpLCAoMCwgMCwgMCldCiAgICB3aGlsZSB0aW1lLnRpbWUoKSA8IGVuZF90aW1lOgogICAgICAgIGZvciBldmVudCBpbiBweWdhbWUuZXZlbnQuZ2V0KCk6CiAgICAgICAgICAgIGlmIGV2ZW50LnR5cGUgPT0gcHlnYW1lLlFVSVQ6CiAgICAgICAgICAgICAgICBweWdhbWUucXVpdCgpCiAgICAgICAgICAgICAgICBzeXMuZXhpdCgpCiAgICAgICAgc2NyZWVuLmZpbGwocmFuZG9tLmNob2ljZShjb2xvcnMpKQogICAgICAgIHB5Z2FtZS5kaXNwbGF5LmZsaXAoKQogICAgICAgIHRpbWUuc2xlZXAoc3BlZWQpCgpmbGFzaF9zY3JlZW4oZHVyYXRpb249Mywgc3BlZWQ9MC4wMykKc2NyZWVuLmJsaXQoanVtcF9pbWFnZSwgKDAsIDApKQpweWdhbWUuZGlzcGxheS5mbGlwKCkKanVtcF9zb3VuZC5wbGF5KCkKdGltZS5zbGVlcCg0KQpweWdhbWUucXVpdCgpCnN5cy5leGl0KCk=
+import pygame
+import time
+import sys
+import random
+
+pygame.init()
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+width, height = screen.get_size()
+jump_image = pygame.image.load("horror_image.jpg")
+jump_image = pygame.transform.scale(jump_image, (width, height))
+jump_sound = pygame.mixer.Sound("scream.wav")
+
+def flash_screen(duration=2, speed=0.05):
+    end_time = time.time() + duration
+    colors = [(255, 255, 255), (0, 0, 0)]
+    while time.time() < end_time:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        screen.fill(random.choice(colors))
+        pygame.display.flip()
+        time.sleep(speed)
+
+flash_screen(duration=3, speed=0.03)
+screen.blit(jump_image, (0, 0))
+pygame.display.flip()
+jump_sound.play()
+time.sleep(4)
+pygame.quit()
+sys.exit()
