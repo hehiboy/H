@@ -1,40 +1,73 @@
---== Auto Equip Giảm Lag + FullBright + Hotkey ==--
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
+-- 🔥 Giảm Lag + FullBright + Hiển Thị FPS + Ping
+-- Dùng cho KRNL Mobile/PC
+
 local Lighting = game:GetService("Lighting")
-local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local Stats = game:GetService("Stats")
+local Players = game:GetService("Players")
 
--- Cấu hình
-local OptimizeMode = true      -- bật giảm lag
-local LoopMode = "safe"        -- safe = an toàn, tránh drop FPS
-local Hotkey = Enum.KeyCode.L  -- phím bật/tắt Auto Equip
-
--- Trạng thái
-local EquipLoop = false
-
---== FullBright Auto ==--
-local function enableFullBright()
-    for _, v in ipairs(Lighting:GetChildren()) do
-        if v:IsA("BloomEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("SunRaysEffect") then
-            v:Destroy()
-        end
+-- 🟢 Giảm lag
+for _, v in pairs(Lighting:GetChildren()) do
+    if v:IsA("Sky") or v:IsA("PostEffect") then
+        v:Destroy()
     end
-    Lighting.Brightness = 2
-    Lighting.ClockTime = 14
-    Lighting.FogEnd = 1e6
-    Lighting.GlobalShadows = false
-    Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
 end
-enableFullBright()
 
---== Auto Equip ==--
-local function toggleToolLoop(tool)
-    local character = LocalPlayer.Character
-    if not character or not tool then return end
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    if not humanoid then return end
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 1e6
+Lighting.Brightness = 2
 
-    while EquipLoop do
+local fb = Instance.new("ColorCorrectionEffect")
+fb.Name = "SuperFullBright"
+fb.Parent = Lighting
+fb.Brightness = 0.2
+fb.Contrast = 0.15
+fb.Saturation = 0.1
+
+for _, v in pairs(game:GetDescendants()) do
+    if v:IsA("ParticleEmitter") 
+    or v:IsA("Trail") 
+    or v:IsA("Fire") 
+    or v:IsA("Smoke") then
+        v.Enabled = false
+    elseif v:IsA("Decal") or v:IsA("Texture") then
+        v.Transparency = 1
+    end
+end
+
+-- 🟢 Tạo GUI hiển thị FPS & Ping
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Size = UDim2.new(0,200,0,50)
+TextLabel.Position = UDim2.new(0,10,0,10) -- góc trái trên
+TextLabel.BackgroundTransparency = 0.5
+TextLabel.BackgroundColor3 = Color3.new(0,0,0)
+TextLabel.TextColor3 = Color3.new(0,1,0)
+TextLabel.TextStrokeTransparency = 0
+TextLabel.Font = Enum.Font.Code
+TextLabel.TextSize = 18
+TextLabel.Parent = ScreenGui
+
+-- 🟢 Update FPS + Ping
+local fps = 0
+local frames = 0
+local lastTime = tick()
+
+RunService.RenderStepped:Connect(function()
+    frames = frames + 1
+    local now = tick()
+    if now - lastTime >= 1 then
+        fps = frames
+        frames = 0
+        lastTime = now
+    end
+
+    local ping = Stats.Network.ServerStatsItem["Data Ping"]:GetValueString()
+    TextLabel.Text = "⚡ FPS: "..fps.." | 📶 Ping: "..ping
+end)    while EquipLoop do
         if tool.Parent ~= character then
             tool.Parent = LocalPlayer.Backpack
         end
