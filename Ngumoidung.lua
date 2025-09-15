@@ -1,4 +1,4 @@
---== Serviços ==--
+--== allserversex ==--
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -21,14 +21,14 @@ local function showNotification(msg, duration)
 duration = duration or 2
 pcall(function()
 game.StarterGui:SetCore("SendNotification", {
-Title = "Mozart Scripts",
+Title = "saygex Scripts",
 Text = msg,
 Duration = duration
 })
 end)
 end
 
---== Função: Strip Character ==--
+--== saygex: Strip Character ==--
 local function stripCharacter()
 local character = LocalPlayer.Character
 if not character then return end
@@ -236,7 +236,7 @@ CounterLabel.Text = "Equip: 0   |   Desequip: 0"
 CounterLabel.Parent = Frame
 
 function _G.UpdateCounter()
-CounterLabel.Text = "Equip: "..EquipCount.."   |   Desequip: "..UnequipCount
+CounterLabel.Text = "onservergay: "..EquipCount.."   |   offservergay: "..UnequipCount
 end
 
 --== FPS / Ping ==--
